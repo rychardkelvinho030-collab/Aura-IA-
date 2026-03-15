@@ -1,22 +1,16 @@
 import streamlit as st
 import google.generativeai as genai
 
-# Configuração da Interface Aura
 st.set_page_config(page_title="Aura IA", page_icon="💠")
 st.title("💠 AURA - CORE SYSTEMS")
-st.caption("Status: Online | Protocolo Jarvis")
 
-# Inserção da Nova Chave
+# Sua nova chave
 API_KEY = "AIzaSyDVZ_MB9WchWO0yL_fWvi421eemvS9FQws"
 
-try:
-    genai.configure(api_key=API_KEY)
-    # Modelo 1.5 Flash: Mais rápido e estável para chaves novas
-    model = genai.GenerativeModel('gemini-1.5-flash')
-except Exception as e:
-    st.error(f"Erro de Configuração: {e}")
+# Configuração que força a compatibilidade
+genai.configure(api_key=API_KEY)
 
-# Histórico de Memória
+# Tentativa de inicialização ultra-compatível
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
@@ -24,18 +18,26 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# Processamento de Diretivas
 if prompt := st.chat_input("Diretiva, Boss..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
     
     try:
-        # Gerando a resposta
-        response = model.generate_content(f"Você é a Aura IA, assistente pessoal do Boss. Seja eficiente. Diretiva: {prompt}")
+        # TENTATIVA 1: O modelo mais estável com nome completo
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content(prompt)
         
         with st.chat_message("assistant"):
             st.markdown(response.text)
         st.session_state.messages.append({"role": "assistant", "content": response.text})
-    except Exception as e:
-        st.error(f"Falha no processamento: {e}")
+    except Exception:
+        try:
+            # TENTATIVA 2: Fallback para o modelo Pro caso o Flash falhe no servidor
+            model_alt = genai.GenerativeModel('gemini-pro')
+            response = model_alt.generate_content(prompt)
+            with st.chat_message("assistant"):
+                st.markdown(response.text)
+            st.session_state.messages.append({"role": "assistant", "content": response.text})
+        except Exception as e:
+            st.error(f"Erro crítico: {e}")
