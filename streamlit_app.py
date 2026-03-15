@@ -41,3 +41,4 @@ if prompt := st.chat_input("Diretiva, Boss..."):
             st.session_state.messages.append({"role": "assistant", "content": response.text})
         except Exception as e:
             st.error(f"Erro crítico: {e}")
+            
