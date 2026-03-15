@@ -18,6 +18,12 @@ st.caption("Status: Operacional | Protocolo Jarvis v3.0")
 # --- NÚCLEO DE ENERGIA (API) ---
 API_KEY = "AIzaSyDVZ_MB9WchWO0yL_fWvi421eemvS9FQws"
 
+# Configuração forçando o transporte via REST para evitar erros de versão
+genai.configure(api_key=API_KEY, transport='rest')
+
+# Usando o nome do modelo sem o prefixo 'models/' para testar a rota direta
+model = genai.GenerativeModel('gemini-1.5-flash')
+---"
 # Configuração do Motor com endereçamento direto
 genai.configure(api_key=API_KEY)
 # Usando o caminho completo para evitar erro de versão da API
