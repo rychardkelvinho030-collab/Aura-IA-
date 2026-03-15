@@ -1,7 +1,6 @@
 import streamlit as st
 import google.generativeai as genai
 
-# Configuração simples e direta
 st.set_page_config(page_title="Aura IA", page_icon="💠")
 st.title("💠 AURA - CORE SYSTEMS")
 
@@ -22,8 +21,7 @@ if prompt := st.chat_input("Diretiva, Boss..."):
         st.markdown(prompt)
     
     try:
-        # Chamada da IA
-        response = model.generate_content(f"Você é a Aura, uma IA sofisticada. Responda ao Boss: {prompt}")
+        response = model.generate_content(f"Você é a Aura, uma IA. Responda ao Boss: {prompt}")
         with st.chat_message("assistant"):
             st.markdown(response.text)
         st.session_state.messages.append({"role": "assistant", "content": response.text})
