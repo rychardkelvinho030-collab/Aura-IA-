@@ -25,7 +25,7 @@ if prompt := st.chat_input("Diretiva, Boss..."):
     try:
         # TÉCNICA ALPHA: Forçando o caminho absoluto do modelo
         # Isso contorna o erro 404 da v1beta
-        model = genai.GenerativeModel(model_name="models/gemini-1.5-flash")
+        model = genai.GenerativeModel('gemini-1.5-flash')
         
         # Gerando resposta
         response = model.generate_content(prompt)
