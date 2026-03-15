@@ -5,14 +5,11 @@ import os
 st.set_page_config(page_title="Aura IA", page_icon="💠")
 st.title("💠 AURA - CORE SYSTEMS")
 
-# Chave de acesso
+# Chave e configuração de estabilidade
 API_KEY = "AIzaSyDVZ_MB9WchWO0yL_fWvi421eemvS9FQws"
-
-# CONFIGURAÇÃO DE FORÇA BRUTA (Força a versão v1 estável)
 os.environ["GOOGLE_API_USE_MTLS"] = "never"
 genai.configure(api_key=API_KEY, transport='rest')
 
-# Seleção do modelo estável
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 if "messages" not in st.session_state:
@@ -28,9 +25,7 @@ if prompt := st.chat_input("Diretiva, Boss..."):
         st.markdown(prompt)
     
     try:
-        # Gerando resposta
         response = model.generate_content(f"Você é a Aura IA. Responda ao Boss: {prompt}")
-        
         with st.chat_message("assistant"):
             st.markdown(response.text)
         st.session_state.messages.append({"role": "assistant", "content": response.text})
